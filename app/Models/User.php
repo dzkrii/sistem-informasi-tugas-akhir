@@ -68,4 +68,19 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->canAccessFilament();
     }
+
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    public function isStudent()
+    {
+        return $this->role === 'student';
+    }
+
+    public function isLecturer()
+    {
+        return $this->role === 'lecturer';
+    }
 }

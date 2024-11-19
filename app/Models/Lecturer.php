@@ -17,4 +17,9 @@ class Lecturer extends Model
     {
         return $this->morphOne(User::class, 'userable');
     }
+
+    public function supervisedTheses()
+    {
+        return $this->hasMany(Thesis::class);
+    }
 }

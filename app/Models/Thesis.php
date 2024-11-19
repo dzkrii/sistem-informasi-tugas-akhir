@@ -23,4 +23,9 @@ class Thesis extends Model
     {
         return $this->belongsTo(Lecturer::class);
     }
+
+    public function titleSubmissions()
+    {
+        return $this->hasMany(TitleSubmission::class);
+    }
 }

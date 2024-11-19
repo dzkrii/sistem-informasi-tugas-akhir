@@ -35,4 +35,9 @@ class Student extends Model
             $student->user()->delete();
         });
     }
+
+    public function thesis()
+    {
+        return $this->hasOne(Thesis::class);
+    }
 }

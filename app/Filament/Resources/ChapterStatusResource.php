@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ThesisResource\Pages;
-use App\Filament\Resources\ThesisResource\RelationManagers;
-use App\Models\Thesis;
+use App\Filament\Resources\ChapterStatusResource\Pages;
+use App\Filament\Resources\ChapterStatusResource\RelationManagers;
+use App\Models\ChapterStatus;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ThesisResource extends Resource
+class ChapterStatusResource extends Resource
 {
-    protected static ?string $model = Thesis::class;
+    protected static ?string $model = ChapterStatus::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,16 +23,18 @@ class ThesisResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('student_id')
+                Forms\Components\TextInput::make('thesis_id')
                     ->required()
-                    ->relationship('student', 'name'),
-                Forms\Components\Select::make('lecturer_id')
+                    ->numeric(),
+                Forms\Components\TextInput::make('chapter_number')
                     ->required()
-                    ->relationship('lecturer', 'name'),
+                    ->numeric(),
                 Forms\Components\TextInput::make('status')
                     ->required()
                     ->maxLength(255)
-                    ->default('progress'),
+                    ->default('not_started'),
+                Forms\Components\Textarea::make('note')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -40,11 +42,11 @@ class ThesisResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('student.name')
-                    ->sortable()
-                    ->label('Mahasiswa'),
-                Tables\Columns\TextColumn::make('lecturer.name')
-                    ->label('Dosen Pembimbing')
+                Tables\Columns\TextColumn::make('thesis_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('chapter_number')
+                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
@@ -84,9 +86,9 @@ class ThesisResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTheses::route('/'),
-            'create' => Pages\CreateThesis::route('/create'),
-            'edit' => Pages\EditThesis::route('/{record}/edit'),
+            'index' => Pages\ListChapterStatuses::route('/'),
+            'create' => Pages\CreateChapterStatus::route('/create'),
+            'edit' => Pages\EditChapterStatus::route('/{record}/edit'),
         ];
     }
 }

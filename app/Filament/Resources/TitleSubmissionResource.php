@@ -23,21 +23,32 @@ class TitleSubmissionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('thesis_id')
-                    ->required()
-                    ->relationship('thesis', 'id'),
+                // Forms\Components\Select::make('thesis_id')
+                //     ->required()
+                //     ->relationship('thesis', 'id'),
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('pending'),
+                // Forms\Components\TextInput::make('status')
+                //     ->required()
+                //     ->maxLength(255)
+                //     ->default('pending'),
+                // * Field status dan rejection_note hanya visible untuk dosen
+                Forms\Components\Select::make('status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'accepted' => 'Accepted',
+                        'rejected' => 'Rejected',
+                    ])
+                    ->default('pending')
+                    ->visible(fn() => auth()->user()->isLecturer())
+                    ->required(),
                 Forms\Components\Textarea::make('note')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->visible(fn() => auth()->user()->isLecturer()),
             ]);
     }
 
@@ -45,9 +56,10 @@ class TitleSubmissionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('thesis_id')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('thesis.student.name')
+                    ->label('Mahasiswa')
+                    ->sortable()
+                    ->visible(fn() => auth()->user()->isLecturer()),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
@@ -72,6 +84,29 @@ class TitleSubmissionResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        // Jika user adalah mahasiswa, tampilkan hanya judul miliknya
+        if (auth()->user()->isStudent()) {
+            $student = auth()->user()->userable;
+            return $query->whereHas('thesis', function ($query) use ($student) {
+                $query->where('student_id', $student->id);
+            });
+        }
+
+        // Jika user adalah dosen, tampilkan judul mahasiswa bimbingannya
+        if (auth()->user()->isLecturer()) {
+            $lecturer = auth()->user()->userable;
+            return $query->whereHas('thesis', function ($query) use ($lecturer) {
+                $query->where('lecturer_id', $lecturer->id);
+            });
+        }
+
+        return $query;
     }
 
     public static function getRelations(): array
