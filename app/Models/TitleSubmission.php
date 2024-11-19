@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TitleSubmission extends Model
 {
@@ -14,4 +15,9 @@ class TitleSubmission extends Model
         'status',
         'note',
     ];
+
+    public function thesis(): BelongsTo
+    {
+        return $this->belongsTo(Thesis::class);
+    }
 }
