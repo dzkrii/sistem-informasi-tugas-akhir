@@ -17,7 +17,10 @@ class FacultyResource extends Resource
 {
     protected static ?string $model = Faculty::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Fakultas';
+    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationGroup = 'Data Master';
 
     public static function form(Form $form): Form
     {

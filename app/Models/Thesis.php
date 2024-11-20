@@ -22,14 +22,20 @@ class Thesis extends Model
     public function createInitialChapters()
     {
         // Buat 5 chapter status untuk thesis ini
-        for ($i = 1; $i <= 5; $i++) {
-            $this->chapterStatuses()->create([
-                'chapter_number' => $i,
-                'status' => 'not_started',
-                'revision_note' => null,
-                'last_reviewed_at' => null
-            ]);
-        }
+        // for ($i = 1; $i <= 5; $i++) {
+        $this->chapterStatuses()->create([
+            'bab1' => 'not_started',
+            'note1' => null,
+            'bab2' => 'not_started',
+            'note2' => null,
+            'bab3' => 'not_started',
+            'note3' => null,
+            'bab4' => 'not_started',
+            'note4' => null,
+            'bab5' => 'not_started',
+            'note5' => null,
+        ]);
+        // }
     }
 
     public function student(): BelongsTo

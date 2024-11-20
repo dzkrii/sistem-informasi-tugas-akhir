@@ -17,7 +17,10 @@ class KaprodiResource extends Resource
 {
     protected static ?string $model = Kaprodi::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Kaprodi';
+    protected static ?string $navigationIcon = 'heroicon-o-user-circle';
+    protected static ?int $navigationSort = 3;
+    protected static ?string $navigationGroup = 'Data Master';
 
     public static function form(Form $form): Form
     {

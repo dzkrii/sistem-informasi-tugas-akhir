@@ -17,7 +17,10 @@ class ThesisResource extends Resource
 {
     protected static ?string $model = Thesis::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Thesis';
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?int $navigationSort = 6;
+    protected static ?string $navigationGroup = 'Manajemen Tugas Akhir';
 
     public static function form(Form $form): Form
     {
