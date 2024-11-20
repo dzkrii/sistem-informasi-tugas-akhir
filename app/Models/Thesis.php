@@ -14,6 +14,24 @@ class Thesis extends Model
         'status',
     ];
 
+    public function chapterStatuses()
+    {
+        return $this->hasMany(ChapterStatus::class);
+    }
+
+    public function createInitialChapters()
+    {
+        // Buat 5 chapter status untuk thesis ini
+        for ($i = 1; $i <= 5; $i++) {
+            $this->chapterStatuses()->create([
+                'chapter_number' => $i,
+                'status' => 'not_started',
+                'revision_note' => null,
+                'last_reviewed_at' => null
+            ]);
+        }
+    }
+
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);

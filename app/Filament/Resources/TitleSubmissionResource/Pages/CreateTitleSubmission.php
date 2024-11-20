@@ -10,6 +10,17 @@ class CreateTitleSubmission extends CreateRecord
 {
     protected static string $resource = TitleSubmissionResource::class;
 
+    protected function afterCreate(): void
+    {
+        // Ambil thesis dari submission yang baru dibuat
+        $thesis = $this->record->thesis;
+
+        // Cek apakah thesis sudah memiliki chapter status
+        if ($thesis->chapterStatuses()->count() === 0) {
+            $thesis->createInitialChapters();
+        }
+    }
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         // Jika mahasiswa yang membuat, set thesis_id otomatis

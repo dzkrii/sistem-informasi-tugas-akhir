@@ -13,4 +13,9 @@ class ChapterStatus extends Model
         'status',
         'note',
     ];
+
+    public function thesis()
+    {
+        return $this->belongsTo(Thesis::class);
+    }
 }
