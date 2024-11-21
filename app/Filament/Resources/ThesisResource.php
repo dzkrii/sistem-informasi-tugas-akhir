@@ -49,8 +49,15 @@ class ThesisResource extends Resource
                 Tables\Columns\TextColumn::make('lecturer.name')
                     ->label('Dosen Pembimbing')
                     ->sortable(),
+                // make status badge if progress == yellow, if finished == green
                 Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'progress' => 'warning',
+                        'finished' => 'success',
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -69,6 +76,7 @@ class ThesisResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

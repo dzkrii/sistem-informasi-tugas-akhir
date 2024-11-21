@@ -46,10 +46,8 @@ class ChapterStatusResource extends Resource
                         'revision_needed' => 'Perlu Revisi',
                         'accepted' => 'Diterima'
                     ])
-                    ->required()
-                    ->visible(fn() => auth()->user()->isLecturer()),
-                Forms\Components\Textarea::make('note1')
-                    ->visible(fn() => auth()->user()->isLecturer()),
+                    ->required(),
+                Forms\Components\Textarea::make('note1'),
                 Forms\Components\Select::make('bab2')
                     ->options([
                         'not_started' => 'Belum Dimulai',
@@ -57,10 +55,8 @@ class ChapterStatusResource extends Resource
                         'revision_needed' => 'Perlu Revisi',
                         'accepted' => 'Diterima'
                     ])
-                    ->required()
-                    ->visible(fn() => auth()->user()->isLecturer()),
-                Forms\Components\Textarea::make('note2')
-                    ->visible(fn() => auth()->user()->isLecturer()),
+                    ->required(),
+                Forms\Components\Textarea::make('note2'),
                 Forms\Components\Select::make('bab3')
                     ->options([
                         'not_started' => 'Belum Dimulai',
@@ -68,10 +64,8 @@ class ChapterStatusResource extends Resource
                         'revision_needed' => 'Perlu Revisi',
                         'accepted' => 'Diterima'
                     ])
-                    ->required()
-                    ->visible(fn() => auth()->user()->isLecturer()),
-                Forms\Components\Textarea::make('note3')
-                    ->visible(fn() => auth()->user()->isLecturer()),
+                    ->required(),
+                Forms\Components\Textarea::make('note3'),
                 Forms\Components\Select::make('bab4')
                     ->options([
                         'not_started' => 'Belum Dimulai',
@@ -79,10 +73,8 @@ class ChapterStatusResource extends Resource
                         'revision_needed' => 'Perlu Revisi',
                         'accepted' => 'Diterima'
                     ])
-                    ->required()
-                    ->visible(fn() => auth()->user()->isLecturer()),
-                Forms\Components\Textarea::make('note4')
-                    ->visible(fn() => auth()->user()->isLecturer()),
+                    ->required(),
+                Forms\Components\Textarea::make('note4'),
                 Forms\Components\Select::make('bab5')
                     ->options([
                         'not_started' => 'Belum Dimulai',
@@ -90,10 +82,8 @@ class ChapterStatusResource extends Resource
                         'revision_needed' => 'Perlu Revisi',
                         'accepted' => 'Diterima'
                     ])
-                    ->required()
-                    ->visible(fn() => auth()->user()->isLecturer()),
-                Forms\Components\Textarea::make('note5')
-                    ->visible(fn() => auth()->user()->isLecturer()),
+                    ->required(),
+                Forms\Components\Textarea::make('note5'),
             ]);
     }
 
@@ -175,8 +165,10 @@ class ChapterStatusResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make()
                     ->visible(fn() => auth()->user()->isLecturer()),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
