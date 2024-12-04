@@ -17,7 +17,7 @@ class ThesisResource extends Resource
 {
     protected static ?string $model = Thesis::class;
 
-    protected static ?string $navigationLabel = 'Thesis';
+    protected static ?string $navigationLabel = 'Keterangan (Status) TA';
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static ?int $navigationSort = 6;
     protected static ?string $navigationGroup = 'Manajemen Tugas Akhir';
@@ -28,13 +28,27 @@ class ThesisResource extends Resource
             ->schema([
                 Forms\Components\Select::make('student_id')
                     ->required()
-                    ->relationship('student', 'name'),
+                    ->label("Mahasiswa")
+                    ->relationship(
+                        'student',
+                        'name',
+                        fn(Builder $query) =>
+                        // Jika yang login adalah Kaprodi, filter mahasiswa sesuai departemennya
+                        auth()->user()->role === 'kaprodi'
+                            ? $query->where('department_id', auth()->user()->userable->department_id)
+                            : $query
+                    ),
                 Forms\Components\Select::make('lecturer_id')
                     ->required()
+                    ->label("Dosen Pembimbing")
                     ->relationship('lecturer', 'name'),
-                Forms\Components\TextInput::make('status')
+                Forms\Components\Select::make('status')
                     ->required()
-                    ->maxLength(255)
+                    ->options([
+                        'progress' => 'Progress',
+                        'finished' => 'Selesai',
+                    ])
+                    ->hidden()
                     ->default('progress'),
             ]);
     }
@@ -80,7 +94,7 @@ class ThesisResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -90,6 +104,21 @@ class ThesisResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        // Jika yang login adalah Kaprodi, filter hanya thesis di departemennya
+        if (auth()->user()->role === 'kaprodi') {
+            $kaprodi = auth()->user()->userable;
+            return $query->whereHas('student', function ($q) use ($kaprodi) {
+                $q->where('department_id', $kaprodi->department_id);
+            });
+        }
+
+        return $query;
     }
 
     public static function getPages(): array

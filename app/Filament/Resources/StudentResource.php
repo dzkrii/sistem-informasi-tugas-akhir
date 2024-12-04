@@ -45,6 +45,7 @@ class StudentResource extends Resource
                     ->visible(fn($livewire) => $livewire instanceof Pages\CreateStudent),
                 Forms\Components\Select::make('department_id')
                     ->relationship('department', 'name')
+                    ->label('Program Studi')
                     ->required(),
             ]);
     }
@@ -53,12 +54,13 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('nim')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('department.name')
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Program Studi'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

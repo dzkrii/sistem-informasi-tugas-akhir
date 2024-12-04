@@ -14,7 +14,7 @@ class ThesisPolicy
     public function viewAny(User $user): bool
     {
         // Semua role bisa melihat (admin, kaprodi, lecturer, student)
-        return in_array($user->role, ['admin', 'kaprodi', 'lecturer', 'student']);
+        return in_array($user->role, ['admin', 'kaprodi']);
     }
 
     /**
@@ -23,7 +23,7 @@ class ThesisPolicy
     public function view(User $user, Thesis $thesis): bool
     {
         // Sama seperti viewAny
-        return in_array($user->role, ['admin', 'kaprodi', 'lecturer', 'student']);
+        return in_array($user->role, ['admin', 'kaprodi']);
     }
 
     /**

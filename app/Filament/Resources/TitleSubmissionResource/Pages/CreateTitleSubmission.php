@@ -3,12 +3,67 @@
 namespace App\Filament\Resources\TitleSubmissionResource\Pages;
 
 use App\Filament\Resources\TitleSubmissionResource;
+use App\Models\Thesis;
+use App\Models\TitleSubmission;
 use Filament\Actions;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateTitleSubmission extends CreateRecord
 {
     protected static string $resource = TitleSubmissionResource::class;
+
+    // Override method create untuk tambahan validasi
+    // public function create(array $data): void
+    // {
+    //     // Pastikan hanya mahasiswa yang bisa membuat
+    //     if (!auth()->user()->isStudent()) {
+    //         Notification::make()
+    //             ->title('Akses Ditolak')
+    //             ->body('Hanya mahasiswa yang dapat mengajukan judul.')
+    //             ->danger()
+    //             ->send();
+
+    //         $this->halt();
+    //         return;
+    //     }
+
+    //     // Ambil data mahasiswa yang sedang login
+    //     $student = auth()->user()->userable;
+
+    //     // Cek apakah mahasiswa sudah memiliki thesis
+    //     $existingThesis = Thesis::where('student_id', $student->id)->first();
+
+    //     if (!$existingThesis) {
+    //         Notification::make()
+    //             ->title('Tidak Dapat Mengajukan Judul')
+    //             ->body('Anda belum dialokasikan dosen pembimbing. Silakan hubungi Kaprodi.')
+    //             ->danger()
+    //             ->send();
+
+    //         $this->halt();
+    //         return;
+    //     }
+
+    //     // Cek apakah sudah pernah mengajukan judul
+    //     $existingSubmission = TitleSubmission::whereHas('thesis', function ($query) use ($student) {
+    //         $query->where('student_id', $student->id);
+    //     })->first();
+
+    //     if ($existingSubmission) {
+    //         Notification::make()
+    //             ->title('Pengajuan Judul')
+    //             ->body('Anda sudah pernah mengajukan judul. Silakan tunggu persetujuan.')
+    //             ->warning()
+    //             ->send();
+
+    //         $this->halt();
+    //         return;
+    //     }
+
+    //     // Lanjutkan proses create jika lolos validasi
+    //     parent::create($data);
+    // }
 
     protected function afterCreate(): void
     {

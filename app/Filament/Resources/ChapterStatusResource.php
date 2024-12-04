@@ -114,7 +114,7 @@ class ChapterStatusResource extends Resource
 
                 Tables\Columns\TextColumn::make('thesis.student.name')
                     ->label('Mahasiswa')
-                    ->visible(fn() => auth()->user()->isLecturer()),
+                    ->visible(fn() => !auth()->user()->isStudent()),
                 Tables\Columns\TextColumn::make('bab1')
                     ->label('Bab 1')
                     ->badge()
@@ -123,7 +123,9 @@ class ChapterStatusResource extends Resource
                         'in_review' => 'warning',
                         'revision_needed' => 'danger',
                         'accepted' => 'success',
-                    }),
+                    })
+                    ->description(fn(ChapterStatus $record): string => $record->note1 ?? '-')
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('bab2')
                     ->label('Bab 2')
                     ->badge()
@@ -132,7 +134,9 @@ class ChapterStatusResource extends Resource
                         'in_review' => 'warning',
                         'revision_needed' => 'danger',
                         'accepted' => 'success',
-                    }),
+                    })
+                    ->description(fn(ChapterStatus $record): string => $record->note2 ?? '-')
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('bab3')
                     ->label('Bab 3')
                     ->badge()
@@ -141,7 +145,9 @@ class ChapterStatusResource extends Resource
                         'in_review' => 'warning',
                         'revision_needed' => 'danger',
                         'accepted' => 'success',
-                    }),
+                    })
+                    ->description(fn(ChapterStatus $record): string => $record->note3 ?? '-')
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('bab4')
                     ->label('Bab 4')
                     ->badge()
@@ -150,7 +156,9 @@ class ChapterStatusResource extends Resource
                         'in_review' => 'warning',
                         'revision_needed' => 'danger',
                         'accepted' => 'success',
-                    }),
+                    })
+                    ->description(fn(ChapterStatus $record): string => $record->note4 ?? '-')
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('bab5')
                     ->label('Bab 5')
                     ->badge()
@@ -159,7 +167,9 @@ class ChapterStatusResource extends Resource
                         'in_review' => 'warning',
                         'revision_needed' => 'danger',
                         'accepted' => 'success',
-                    }),
+                    })
+                    ->description(fn(ChapterStatus $record): string => $record->note5 ?? '-')
+                    ->wrap(),
             ])
             ->filters([
                 //
@@ -171,10 +181,10 @@ class ChapterStatusResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
-                        ->visible(fn() => auth()->user()->isLecturer()),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make()
+                //         ->visible(fn() => auth()->user()->isLecturer()),
+                // ]),
             ]);
     }
 

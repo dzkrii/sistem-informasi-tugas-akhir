@@ -41,7 +41,7 @@ class TitleSubmissionPolicy
     public function update(User $user, TitleSubmission $titleSubmission): bool
     {
         // Admin dan lecturer dapat update
-        return in_array($user->role, ['admin', 'lecturer']);
+        return in_array($user->role, ['admin', 'lecturer', 'student']);
     }
 
     /**

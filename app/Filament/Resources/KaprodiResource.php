@@ -32,6 +32,10 @@ class KaprodiResource extends Resource
                 Forms\Components\TextInput::make('nidn')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('department_id')
+                    ->relationship('department', 'name')
+                    ->label('Program Studi')
+                    ->required(),
                 Forms\Components\TextInput::make('user.email')
                     ->email()
                     ->required(),
@@ -46,10 +50,13 @@ class KaprodiResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('nidn')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('department.name')
+                    ->label('Program Studi')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -16,7 +16,7 @@ class Thesis extends Model
 
     public function chapterStatuses()
     {
-        return $this->hasMany(ChapterStatus::class);
+        return $this->hasOne(ChapterStatus::class);
     }
 
     public function createInitialChapters()
